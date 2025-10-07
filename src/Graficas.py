@@ -43,30 +43,54 @@ def grafico_finanzas_personales(df_finanzas, cedula):
     ahorro_actual = total_ingresos * (usuario['porcentaje_ahorro'] / 100)
 
     # Crear figura con dos subplots
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 7))
 
-    # Gráfico 1: Ingresos vs Gastos Totales
+    # Gráfico 1: Ingresos vs Gastos Prioritarios vs Gastos Secundarios (Pie)
+    categorias = ['Ingresos', 'Gastos Prioritarios', 'Gastos Secundarios']
+    valores = [total_ingresos, total_gastos_prio, total_gastos_sec]
+    colores = [COLORES["GOOD"], COLORES["BAD"], COLORES["SECONDARY"]]
     
     ax1.pie(
-        [total_ingresos, total_gastos],
-        labels=['Ingresos', 'Gastos Totales'],
+        valores,
+        labels=categorias,
         autopct='%1.1f%%',
-        colors=[COLORES["GOOD"], COLORES["BAD"]],
+        colors=colores,
         startangle=90
     )
-    ax1.set_title(f'Ingresos vs Gastos Totales\n{usuario["nombre"]} {usuario["apellido"]}')
+    ax1.set_title(f'Distribución Financiera\n{usuario["nombre"]} {usuario["apellido"]}')
 
-    # Gráfico 2: Composición de Gastos (mantenemos el original)
-    gastos_labels = ['Prioritarios', 'Secundarios']
-    gastos_values = [total_gastos_prio, total_gastos_sec]
-    ax2.pie(
-        [total_gastos_prio, total_gastos_sec],
-        labels=['Prioritarios', 'Secundarios'],
-        autopct='%1.1f%%',
-        colors=[COLORES["BAD"], COLORES["SECONDARY"]],
-        startangle=90
-    )
-    ax2.set_title('Composición de Gastos')
+    # Gráfico 2: Desglose de todos los gastos (Barras)
+    # Preparar datos para el gráfico de barras
+    gastos_prioritarios = list(usuario['gastos_prioritarios'].items())
+    gastos_secundarios = list(usuario['gastos_secundarios'].items())
+    
+    # Combinar todos los gastos
+    todos_gastos = gastos_prioritarios + gastos_secundarios
+    categorias_gastos = [gasto[0] for gasto in todos_gastos]
+    valores_gastos = [gasto[1] for gasto in todos_gastos]
+    
+    # Definir colores para las barras
+    colores_barras = [COLORES["BAD"]] * len(gastos_prioritarios) + [COLORES["SECONDARY"]] * len(gastos_secundarios)
+    
+    # Crear gráfico de barras
+    bars = ax2.bar(categorias_gastos, valores_gastos, color=colores_barras, alpha=0.8)
+    ax2.set_title('Desglose de Gastos Individuales')
+    ax2.set_ylabel('Monto ($)')
+    ax2.set_xlabel('Categorías de Gastos')
+    
+    # Rotar etiquetas del eje x para mejor legibilidad
+    plt.setp(ax2.get_xticklabels(), rotation=45, ha='right')
+    
+    # Añadir valores en las barras
+    for bar in bars:
+        height = bar.get_height()
+        ax2.annotate(f'${height:,.0f}',
+                    xy=(bar.get_x() + bar.get_width() / 2, height),
+                    xytext=(0, 3),  # 3 points vertical offset
+                    textcoords="offset points",
+                    ha='center', va='bottom', fontsize=9)
+
+    # Ajustar layout
     plt.tight_layout()
     plt.show()
 
