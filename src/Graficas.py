@@ -151,7 +151,7 @@ def proporcion_ingresos(df_tipo_ingreso):
     conteo_ingresos = df_tipo_ingreso['tipo_ingreso'].value_counts().reindex([1,0],fill_value=0)
     ax.pie(conteo_ingresos.values, labels=['Con Ingresos', 'Sin Ingresos'],
        autopct='%1.1f%%', colors=[COLORES["GOOD"], COLORES["BAD"]], startangle=90)
-    ax.set_title('Proporción de Estudiantes con/sin Ingresos')
+    ax.set_title('Proporción de usuarios con/sin Ingresos')
 
     plt.tight_layout()
     plt.show()

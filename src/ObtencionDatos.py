@@ -11,6 +11,8 @@ def obtener_datos(nombre_archivo):
 
 
   def nuevo_dic(data):
+      if pd.isna(data):
+          return {'sin registro': 0}
       data_str = str(data).strip()
       if "$" in data_str :
         data_str = data_str.replace("$", "")
@@ -21,7 +23,7 @@ def obtener_datos(nombre_archivo):
       # Si NO hay comas, procesar como un solo elemento
       if " " not in data_str:
           if not data_str:
-              return {"0": "0"}
+              return {"0": 0}
 
           if ":" in data_str:
               clave, valor = data_str.split(":", 1)
