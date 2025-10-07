@@ -24,6 +24,7 @@ def obtener_datos(nombre_archivo):
 
       #Si no hay espacios, se trata como un solo elemento
       if " " not in data_str:
+        #Si no hay data entonces retorna valor de 0
           if not data_str:
               return {"0": 0}
 
@@ -51,7 +52,7 @@ def obtener_datos(nombre_archivo):
               elemento = elemento.strip()
               if not elemento:
                   continue
-
+                  #Separa el inidce del valor 
               if ":" in elemento:
                   clave, valor = elemento.split(":", 1)
                   clave = clave.strip()
