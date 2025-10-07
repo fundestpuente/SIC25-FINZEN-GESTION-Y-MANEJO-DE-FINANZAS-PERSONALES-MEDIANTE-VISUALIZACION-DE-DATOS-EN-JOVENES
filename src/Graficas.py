@@ -171,7 +171,7 @@ def grafico_comparativo_completo(df_finanzas, cedula):
 def proporcion_ingresos(df_tipo_ingreso):
     fig, ax = plt.subplots(figsize=(8, 8))
 
-    # Gráfico de pastel que representa la cantidad de estudiantes con ingresos con relacion a los que no reciben ingresos.
+    # Gráfico de pastel que representa la cantidad de jovenes con ingresos con relacion a los que no reciben ingresos.
     conteo_ingresos = df_tipo_ingreso['tipo_ingreso'].value_counts().reindex([1,0],fill_value=0)
     ax.pie(conteo_ingresos.values, labels=['Con Ingresos', 'Sin Ingresos'],
        autopct='%1.1f%%', colors=[COLORES["GOOD"], COLORES["BAD"]], startangle=90)
@@ -216,7 +216,7 @@ def edad_vs_ahorro(df_finanzas):
 
     fig, ax = plt.subplots(figsize=(10, 6))
 
-    # Creación del gráfico de barras agrupado
+    # Creación del gráfico de barras
     df_finanzas['grupo_edad'] = pd.cut(
         df_finanzas['edad'],
         bins=[17, 20, 23, 26, 30],
